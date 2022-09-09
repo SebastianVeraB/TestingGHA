@@ -6,8 +6,6 @@ name: CI
 # events but only for the master branch
 on:
   pull_request:
-    types:  [labeled] 
-    
     branches: [ dev ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -20,13 +18,17 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-      - name: 'Deploy Check'
-      - run: npm install sfdx-cli@latest-rc
-      - run: sfdx -v
+      - name: 'Install SFDX'
+        run: |
+          wget https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
+          mkdir sfdx-cli
+          tar xJf sfdx-linux-amd64.tar.xz -C sfdx-cli --strip-components 1
+          ./sfdx-cli/install
         
+      - name: 'Version Test'
+        run: sfdx -v
+        
+      - name: 'Login'
+        run: sfdx force:auth:jwt:grant --clientid= 'test' --username='test' --jwtkeyfile '/.github/workflows/action.yml' --setdefaultdevhubusername --setalias=hub-org
     
