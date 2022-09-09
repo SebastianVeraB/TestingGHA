@@ -22,7 +22,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - name: 'Deploy Check'
+      - name: 'Install SFDX'
         run: npm install sfdx-cli@latest-rc
-      - run: sfdx -v
+        
+      - name: 'Version Test'
+        run: sfdx -v
     
