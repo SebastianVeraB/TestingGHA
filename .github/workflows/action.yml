@@ -26,5 +26,4 @@ jobs:
           node-version: 16
       - name: 'Deploy Check'
         run: npm install sfdx-cli@latest-rc
-        
     
