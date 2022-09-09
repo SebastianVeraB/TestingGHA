@@ -19,9 +19,6 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
       - name: 'Install SFDX'
         run: |
           wget https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
@@ -31,4 +28,7 @@ jobs:
         
       - name: 'Version Test'
         run: sfdx -v
+        
+      - name: 'Login'
+        run: sfdx force:auth:jwt:grant --clientid= 'test' --username='test' --jwtkeyfile '/.github/workflows/action.yml' --setdefaultdevhubusername --setalias=hub-org
     
